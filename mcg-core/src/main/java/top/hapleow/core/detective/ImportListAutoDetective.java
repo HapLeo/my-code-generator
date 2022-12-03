@@ -1,7 +1,6 @@
 package top.hapleow.core.detective;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -127,7 +126,7 @@ public class ImportListAutoDetective {
         // 去除当前类自身的引用
         if (fileName.endsWith(".java")) {
             String clazzName = fileName.replace(".java", "");
-            //clazzSet.remove(clazzName);
+            clazzSet.remove(clazzName);
         }
         //匹配需要导入的类列表
         for (String next : clazzSet) {

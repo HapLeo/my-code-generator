@@ -13,9 +13,11 @@ import java.util.Map;
  */
 public interface ICodeGenService {
 
-    List<Map<String, String>> listTables();
+    List<Map<String, Object>> listTables();
 
     TableInfo listColumns(String tableName);
 
     void codGen(CodeGenCmd codeGenCmd);
+
+    List<String> listTemplates();
 }

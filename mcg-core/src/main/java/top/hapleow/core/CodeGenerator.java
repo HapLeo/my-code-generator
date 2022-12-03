@@ -1,6 +1,7 @@
 package top.hapleow.core;
 
 import cn.hutool.core.io.resource.ClassPathResource;
+import cn.hutool.core.util.StrUtil;
 import org.beetl.core.Template;
 import top.hapleow.core.config.GroupTemplateConfig;
 import top.hapleow.core.detective.FilePathAutoDetective;
@@ -36,10 +37,12 @@ public class CodeGenerator {
      *
      * @param rootPath
      * @param modelName
-     * @param templatePath
+     * @param templateName
      * @param tags
      */
-    public void execute(String rootPath, String modelName, String templatePath, String... tags) {
+    public void execute(String rootPath, String modelName, String templateName, String... tags) {
+
+        String templatePath = "/template/" + templateName;
 
         // 从模板拼接文件名
         String fileName = getFileName(modelName, templatePath);
@@ -55,6 +58,10 @@ public class CodeGenerator {
         Set<String> imports = importListAutoDetective.getImportClasses(clazzSet, rootPath, fileName);
         content.put("imports", imports);
 
+        // 如果没有指定tags，则分析模板默认的tags
+        if (tags == null || tags.length == 0) {
+            tags = getTemplateTags(templateName);
+        }
         // 自动探测需要生成到的目录
         File file = filePathAutoDetective.detectPath(rootPath, tags);
         File serviceFile = new File(file.getAbsolutePath() + File.separator + fileName);
@@ -70,6 +77,23 @@ public class CodeGenerator {
     }
 
     /**
+     * 获取模板默认的tags
+     *
+     * @param templateName
+     * @return
+     */
+    private String[] getTemplateTags(String templateName) {
+
+        if (templateName == null) return null;
+
+        // model模板单独处理
+        if (templateName.startsWith("model.")) {
+            return new String[]{"model", "java"};
+        }
+        return StrUtil.toUnderlineCase(templateName).replace(".btl", "").replace("model", "").replace("imodel", "").split("\\.");
+    }
+
+    /**
      * 从模板名称获取文件名称
      *
      * @param modelName
@@ -82,7 +106,7 @@ public class CodeGenerator {
         if (file == null) {
             throw new RuntimeException("模板文件" + templatePath + "不存在！");
         }
-        return file.getName().replace("model", modelName).replace(".btl", "");
+        return file.getName().split(".btl")[0].replace("model", modelName);
     }
 
 

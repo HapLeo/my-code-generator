@@ -14,7 +14,7 @@ public class CodeGenCmd {
 
     private String tableName;
 
-    private String templatePath;
+    private String[] templateNames;
 
     private String[] tags;
 }

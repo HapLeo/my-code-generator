@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import top.hapleow.core.CodeGenerator;
+import top.hapleow.core.Templates.ListTemplates;
 import top.hapleow.mcgdatasource.dto.CodeGenCmd;
 import top.hapleow.mcgdatasource.model.TableColumn;
 import top.hapleow.mcgdatasource.model.TableInfo;
@@ -31,8 +32,10 @@ public class CodeGenServiceImpl implements ICodeGenService {
 
 
     @Override
-    public List<Map<String, String>> listTables() {
-        return null;
+    public List<Map<String, Object>> listTables() {
+        List<Map<String, Object>> maps = jdbcTemplate.queryForList(LIST_TABLES_SQL);
+
+        return maps;
     }
 
     @Override
@@ -58,8 +61,14 @@ public class CodeGenServiceImpl implements ICodeGenService {
         CodeGenerator codeGenerator = new CodeGenerator();
         Map<String, Object> content = codeGenerator.getContent();
         content.put("table", table);
-        codeGenerator.execute(codeGenCmd.getRootPath(), StrUtil.upperFirst(StrUtil.toCamelCase(codeGenCmd.getTableName())), codeGenCmd.getTemplatePath(), codeGenCmd.getTags());
+        for (String templateName : codeGenCmd.getTemplateNames()) {
+            codeGenerator.execute(codeGenCmd.getRootPath(), StrUtil.upperFirst(StrUtil.toCamelCase(codeGenCmd.getTableName())), templateName, codeGenCmd.getTags());
+        }
         System.out.println();
+    }
 
+    @Override
+    public List<String> listTemplates() {
+        return ListTemplates.listTemplates();
     }
 }
