@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>My-Code-Generator</title>
+</head>
+<body>
+
+<div id="form" align="center">
+    <span style="border: black;block:true" width="50">rootPath:</span><input name="rootPath" width="200px" id="rootPath" value="D:\20210406\ideaSpace\my-code-generator"/><br/>
+    <span width="50">tableName:</span><input width="200px" id="tableName" value="erp_goods"/><br/>
+    <span width="50">templatePath:</span><input width="200px" id="templatePath" value="template/ImodelService.java.btl"/><br/>
+    <span width="50">tags:</span><input width="200px" id="tags" value="java,service"/><br/>
+    <span width="50" id="submit">提交</span>
+</div>
+</body>
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#submit").click(function () {
+            var rootPath = $("#rootPath").val();
+            var tableName = $("#tableName").val();
+            var templatePath = $("#templatePath").val();
+            var tags = $("#tags").val();
+            if (tags != null && tags != '') {
+                tags = tags.split(",");
+            }
+            var obj = {};
+            obj.rootPath = rootPath;
+            obj.tableName = tableName;
+            obj.templatePath = templatePath;
+            obj.tags = tags;
+            console.log(obj);
+            $.ajax({
+                type: 'post',
+                contentType: "application/json;charset=utf-8",
+                url: 'http://localhost:8080/codeGen',
+                data: JSON.stringify(obj),
+                success: function (resp) {
+                },
+                error: function (resp) {
+                }
+            });
+        });
+    });
+</script>
+</html>

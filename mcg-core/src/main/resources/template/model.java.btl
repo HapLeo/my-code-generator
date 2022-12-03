@@ -1,0 +1,39 @@
+package @{content.packageName};
+
+<% for(import in content.imports!){ %>
+import @{import};
+<% } %>
+
+/**
+ * @{content.table.comment!}
+ *
+ * @author @{content.author!}
+ * @Date @{date(),"yyyy-MM-dd"}
+ */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+public class @{content.modelName} extends Model<@{content.modelName}>{
+
+<% for(item in content.table.fields!){ %>
+    <%if(item.key == "PRI"){ %>
+    @TableId(type = IdType.AUTO)
+    @ApiModelProperty(value = "@{item.comment!}")
+    private @{item.javaType} @{item.propertyName};
+    <%}else if(item.propertyName == "deleted"){ %>
+
+    @TableField("is_deleted")
+    @ApiModelProperty(value = "@{item.comment!}")
+    @TableLogic(value = "0", delval = "1")
+    private @{item.javaType} @{item.propertyName};
+
+    <%}else{ %>
+
+    @ApiModelProperty(value = "@{item.comment!}")
+    private @{item.javaType} @{item.propertyName};
+    <%}%>
+<% } %>
+
+
+
+}

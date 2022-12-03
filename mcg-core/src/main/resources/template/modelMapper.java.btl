@@ -1,0 +1,14 @@
+package @{content.packageName};
+
+<% for(import in content.imports!){ %>
+import @{import};
+<% } %>
+
+/**
+ *
+ * @author @{content.author}
+ * @date @{date(),"yyyy-MM-dd"}
+ */
+public interface @{content.modelName}Mapper extends BaseMapper<@{content.modelName}> {
+
+}
