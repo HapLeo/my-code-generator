@@ -38,7 +38,7 @@ public class CodeGenerator {
      */
     public void execute(String rootPath, String modelName, String templateName, final Map<String, Object> tableContent, String... tags) {
 
-        Map<String,Object> content = new HashMap<>(tableContent);
+        Map<String, Object> content = new HashMap<>(tableContent);
 
         String templatePath = "/template/" + templateName;
 
@@ -63,7 +63,7 @@ public class CodeGenerator {
         // 自动探测需要生成到的目录
         File file = filePathAutoDetective.detectPath(rootPath, tags);
         if (file == null)
-            throw new RuntimeException("未找到合适的文件夹，请指定更多tags或更精确的rootPath以便更精确的匹配目标文件夹！");
+            throw new RuntimeException(templateName + "未找到合适的文件夹，请指定更多tags或更精确的rootPath以便更精确的匹配目标文件夹！");
         File serviceFile = new File(file.getAbsolutePath() + File.separator + fileName);
 
         String pkg = filePathAutoDetective.calClassPackage(serviceFile);

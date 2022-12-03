@@ -5,11 +5,25 @@ import @{import};
 <% } %>
 
 /**
- *
+ * @desc @{content.table.comment!} 服务实现类
  * @author @{content.author}
  * @date @{date(),"yyyy-MM-dd"}
  */
  @Service
 public class @{content.modelName}ServiceImpl extends ServiceImpl<@{content.modelName}Mapper, @{content.modelName}> implements I@{content.modelName}Service {
 
+    @Override
+    public void insert(@{content.modelName} item) {
+
+    }
+
+    @Override
+    public void update(@{content.modelName} before, ErpGoods after) {
+
+    }
+
+    @Override
+    public void delete(@{content.modelName} item) {
+
+    }
 }

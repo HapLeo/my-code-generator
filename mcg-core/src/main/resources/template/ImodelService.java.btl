@@ -6,7 +6,7 @@ import @{import};
 
 /**
  * @author @{content.author}
- * @desc
+ * @desc @{content.table.comment!} 服务接口
  * @date @{date(),"yyyy-MM-dd"}
  */
 public interface I@{content.modelName}Service extends IService<@{content.modelName}> {
