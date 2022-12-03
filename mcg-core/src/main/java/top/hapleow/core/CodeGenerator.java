@@ -26,11 +26,6 @@ public class CodeGenerator {
     private FilePathAutoDetective filePathAutoDetective = new FilePathAutoDetective();
     private ImportListAutoDetective importListAutoDetective = new ImportListAutoDetective();
 
-    private Map<String, Object> content = new HashMap<>();
-
-    public Map<String, Object> getContent() {
-        return content;
-    }
 
     /**
      * 执行生成方法
@@ -38,9 +33,12 @@ public class CodeGenerator {
      * @param rootPath
      * @param modelName
      * @param templateName
+     * @param tableContent
      * @param tags
      */
-    public void execute(String rootPath, String modelName, String templateName, String... tags) {
+    public void execute(String rootPath, String modelName, String templateName, final Map<String, Object> tableContent, String... tags) {
+
+        Map<String,Object> content = new HashMap<>(tableContent);
 
         String templatePath = "/template/" + templateName;
 
@@ -64,6 +62,8 @@ public class CodeGenerator {
         }
         // 自动探测需要生成到的目录
         File file = filePathAutoDetective.detectPath(rootPath, tags);
+        if (file == null)
+            throw new RuntimeException("未找到合适的文件夹，请指定更多tags或更精确的rootPath以便更精确的匹配目标文件夹！");
         File serviceFile = new File(file.getAbsolutePath() + File.separator + fileName);
 
         String pkg = filePathAutoDetective.calClassPackage(serviceFile);
@@ -90,7 +90,7 @@ public class CodeGenerator {
         if (templateName.startsWith("model.")) {
             return new String[]{"model", "java"};
         }
-        return StrUtil.toUnderlineCase(templateName).replace(".btl", "").replace("model", "").replace("imodel", "").split("\\.");
+        return StrUtil.toUnderlineCase(templateName).replace(".btl", "").replace("model", "").replace("imodel", "").replace("_", ".").split("\\.");
     }
 
     /**

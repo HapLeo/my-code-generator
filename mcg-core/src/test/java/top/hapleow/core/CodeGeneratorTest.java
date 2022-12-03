@@ -41,7 +41,7 @@ public class CodeGeneratorTest {
         String modelName = "ErpGoodsUnit";
         String templatePath = "template/ImodelService.java.btl";
         String[] tags = {"java", "service"};
-        codeGenerator.execute(rootPath, modelName, templatePath, tags);
+        codeGenerator.execute(rootPath, modelName, templatePath, new HashMap<>(), tags);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class CodeGeneratorTest {
         String modelName = "ErpGoodsUnit";
         String templatePath = "template/ImodelService.java.btl";
         String[] tags = {"java", "service"};
-        codeGenerator.execute(rootPath, modelName, templatePath, tags);
+        codeGenerator.execute(rootPath, modelName, templatePath, new HashMap<>(), tags);
     }
 
 }

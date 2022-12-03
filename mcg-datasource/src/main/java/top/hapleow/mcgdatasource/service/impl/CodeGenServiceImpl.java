@@ -13,6 +13,7 @@ import top.hapleow.mcgdatasource.model.TableColumn;
 import top.hapleow.mcgdatasource.model.TableInfo;
 import top.hapleow.mcgdatasource.service.ICodeGenService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,7 @@ public class CodeGenServiceImpl implements ICodeGenService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    private CodeGenerator codeGenerator = new CodeGenerator();
 
     @Override
     public List<Map<String, Object>> listTables() {
@@ -58,13 +60,11 @@ public class CodeGenServiceImpl implements ICodeGenService {
     public void codGen(CodeGenCmd codeGenCmd) {
 
         TableInfo table = listColumns(codeGenCmd.getTableName());
-        CodeGenerator codeGenerator = new CodeGenerator();
-        Map<String, Object> content = codeGenerator.getContent();
-        content.put("table", table);
+        Map<String, Object> tableContent = new HashMap<>();
+        tableContent.put("table", table);
         for (String templateName : codeGenCmd.getTemplateNames()) {
-            codeGenerator.execute(codeGenCmd.getRootPath(), StrUtil.upperFirst(StrUtil.toCamelCase(codeGenCmd.getTableName())), templateName, codeGenCmd.getTags());
+            codeGenerator.execute(codeGenCmd.getRootPath(), StrUtil.upperFirst(StrUtil.toCamelCase(codeGenCmd.getTableName())), templateName, tableContent, codeGenCmd.getTags());
         }
-        System.out.println();
     }
 
     @Override
